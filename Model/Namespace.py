@@ -34,7 +34,3 @@ class Namespace(ModelNode):
 
     def get_children(self) -> list[ModelNode]:
         return self.namespaces + self.enums + self.classes
-
-    @classmethod
-    def get_ctor_args_from(cls, params: OrderedDict):
-        return dict()

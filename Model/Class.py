@@ -51,7 +51,15 @@ class Class(ModelNode):
         for key, value in unused.items():
             if isinstance(value, str):
                 records.append(Record.from_name_and_string(key, value))
+            elif isinstance(value, list):
+                for item in value:
+                    if isinstance(item, str):
+                        records.append(Record.from_name_and_string(key, item))
+                    else:
+                        # TODO proper log and warning handling
+                        print("warning message: unknown JSON element:", item)
             else:
-                print("~~~", value)
+                # TODO proper log and warning handling
+                print("warning message: unknown JSON element:", value)
         result[FIELD_RECORDS] = records
         return result
