@@ -18,7 +18,7 @@
           "#setByValue": "false",
           "#docStringSetter": "gets the value of z"
         },
-        "child": "#type=SubClass; #default=SubClass(1,2)",
+        "child": "SubClass; #default=SubClass(1,2)",
         "sibling": "Bar",
         "value": "Bar::EValues"
       },
@@ -44,15 +44,19 @@
       },
       "ESIPrefixExponents": {
         "#type": "enum",
-        "#basetype": "char",
+        "#baseclass": "char",
         "#elements": {
-          "kilo": "3",
-          "Mega": "6"
+          "Kilo": "3",
+          "Mega": "6",
+          "Giga": {
+            "#value": "9",
+            "#docString": "That's a pretty big one"
+          }
         },
-        "Giga": "9",
-        "Tera": {
-          "#value": "12",
-          "#docString": "That's a pretty big one"
+        "Tera": "12;#docString=moar",
+        "Exa": {
+          "#value": 15,
+          "#docString": "even bigger"
         }
       },
 

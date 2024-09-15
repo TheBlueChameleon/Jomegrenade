@@ -46,20 +46,5 @@ class Class(ModelNode):
     @classmethod
     def get_ctor_args_from(cls, descriptor: OrderedDict):
         result = super().get_ctor_args_from(descriptor)
-        unused = cls.get_unknown_args_from(descriptor)
-        records = []
-        for key, value in unused.items():
-            if isinstance(value, str):
-                records.append(Record.from_name_and_string(key, value))
-            elif isinstance(value, list):
-                for item in value:
-                    if isinstance(item, str):
-                        records.append(Record.from_name_and_string(key, item))
-                    else:
-                        # TODO proper log and warning handling
-                        print("warning message: unknown JSON element:", item)
-            else:
-                # TODO proper log and warning handling
-                print("warning message: unknown JSON element:", value)
-        result[FIELD_RECORDS] = records
+        result[FIELD_RECORDS] = cls.get_delegate_nodes(Record, descriptor)
         return result

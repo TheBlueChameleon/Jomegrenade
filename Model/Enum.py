@@ -19,7 +19,8 @@ class Enum(ModelNode):
     KNOWN_KEYS = {
         KEY_PRIMITIVE: FIELD_NAME,
         KEY_NAME: FIELD_NAME,
-        KEY_BASECLASS : FIELD_BASECLASS
+        KEY_BASECLASS : FIELD_BASECLASS,
+        KEY_TYPE: None
     }
 
     def add_enum_value(self, value: EnumValue):
@@ -31,3 +32,9 @@ class Enum(ModelNode):
 
     def get_children(self) -> list[EnumValue]:
         return self.values
+
+    @classmethod
+    def get_ctor_args_from(cls, descriptor: OrderedDict):
+        result = super().get_ctor_args_from(descriptor)
+        result[FIELD_VALUES] = cls.get_delegate_nodes(EnumValue, descriptor)
+        return result

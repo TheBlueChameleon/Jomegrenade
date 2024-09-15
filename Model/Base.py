@@ -2,6 +2,8 @@ from collections import OrderedDict
 from dataclasses import dataclass
 from enum import Enum as PyEnum
 
+from sympy import primitive
+
 # ==================================================================================================================== #
 
 SpecialTreatment = PyEnum("SpecialTreatment", ["none", "optional", "vector"])
@@ -100,11 +102,19 @@ def split_descriptor(descriptor: str) -> OrderedDict:
     if len(stripped) == 1 and len(stripped[0]) == 1:
         return OrderedDict([(KEY_PRIMITIVE, descriptor.strip())])
 
-    valid = filter(
+    valid_pairs = filter(
         lambda pair: len(pair) == 2,
         stripped
     )
+    result = OrderedDict(valid_pairs)
+
+    primitive = next(filter(
+        lambda pair: len(pair) == 1,
+        stripped
+    ), None)
+    if primitive is not None:
+        result[KEY_PRIMITIVE] = primitive[0]
 
     # todo: warn malformed
 
-    return OrderedDict(valid)
+    return result
