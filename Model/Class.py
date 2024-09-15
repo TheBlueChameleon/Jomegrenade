@@ -23,7 +23,8 @@ class Class(ModelNode):
         KEY_PRIMITIVE: FIELD_NAME,
         KEY_NAME: FIELD_NAME,
         KEY_BASECLASS : FIELD_BASECLASS,
-        KEY_DOCSTRING : FIELD_DOCSTRING
+        KEY_DOCSTRING : FIELD_DOCSTRING,
+        KEY_TYPE : None
     }
 
     def add_enum(self, enum: Enum):
@@ -44,5 +45,13 @@ class Class(ModelNode):
 
     @classmethod
     def get_ctor_args_from(cls, descriptor: OrderedDict):
-        # TODO: handle list/string of #elements
-        return super().get_ctor_args_from(descriptor)
+        result = super().get_ctor_args_from(descriptor)
+        unused = cls.get_unknown_args_from(descriptor)
+        records = []
+        for key, value in unused.items():
+            if isinstance(value, str):
+                records.append(Record.from_name_and_string(key, value))
+            else:
+                print("~~~", value)
+        result[FIELD_RECORDS] = records
+        return result

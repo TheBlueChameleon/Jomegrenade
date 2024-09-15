@@ -57,9 +57,9 @@
       },
 
       "#type": "class",
-      "#elements": ["v=EValues", "w=ESIPrefixExponents"],
       "#baseclass": "Foo",
 
+      "#elements": ["v=EValues", "w=ESIPrefixExponents"],
       "record_by_default" : "int"
     }
   }

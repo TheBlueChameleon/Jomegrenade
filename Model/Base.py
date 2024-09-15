@@ -54,7 +54,7 @@ class CtorDictHandler:
         return {
             cls.KNOWN_KEYS[key] : value
             for key, value in primitive_handled.items()
-            if key in cls.KNOWN_KEYS.keys()
+            if cls.KNOWN_KEYS.get(key, None) is not None
         }
 
     @classmethod
@@ -70,6 +70,7 @@ class CtorDictHandler:
 
     @classmethod
     def get_unknown_args_from(cls, descriptor: OrderedDict):
+        # todo: warn on any special keys (.startswith(#)
         return {key: value
             for key, value in descriptor.items()
                 if key not in cls.KNOWN_KEYS
