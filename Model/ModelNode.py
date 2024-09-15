@@ -57,14 +57,14 @@ class ModelNode(NamedElement, CtorDictHandler):
         return ""
 
     @classmethod
+    def from_string(cls, descriptor: str):
+        return cls.from_ordered_dict(split_descriptor(descriptor))
+
+    @classmethod
     def from_name_and_string(cls, name: str, descriptor: str):
         d = split_descriptor(descriptor)
         d[KEY_NAME] = name
         return cls.from_ordered_dict(d)
-
-    @classmethod
-    def from_string(cls, descriptor: str):
-        return cls.from_ordered_dict(split_descriptor(descriptor))
 
     @classmethod
     def from_ordered_dict(cls, descriptor: OrderedDict):

@@ -20,9 +20,9 @@
         },
         "child": "#type=SubClass; #default=SubClass(1,2)",
         "sibling": "Bar",
-        "value": "Bar::EValues",
-        "#docString": "mega"
+        "value": "Bar::EValues"
       },
+      "#docString": "mega",
 
       "SubClass": {
         "#type": "class",
