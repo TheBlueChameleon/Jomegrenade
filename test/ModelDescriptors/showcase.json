@@ -1,0 +1,66 @@
+{
+  "#config": {},
+
+  "Project": {
+    "#type": "namespace",
+
+    "EmptyNameSpace": {},
+
+    "Foo": {
+      "#type": "class",
+      "#elements": {
+        "x": "int",
+        "y": "#type=int; #default=1; #special=optional, #byValue=false",
+        "z": {
+          "#type": "int",
+          "#default": "2",
+          "#getByValue": "false",
+          "#setByValue": "false",
+          "#docStringSetter": "gets the value of z"
+        },
+        "child": "#type=SubClass; #default=SubClass(1,2)",
+        "sibling": "Bar",
+        "value": "Bar::EValues",
+        "#docString": "mega"
+      },
+
+      "SubClass": {
+        "#type": "class",
+        "#elements": {
+          "a": "int",
+          "b": "int"
+        }
+      }
+    },
+
+    "Bar": {
+      "#config": {
+        "#visibilityRecord": "protected"
+      },
+
+      "EValues": {
+        "#type": "enum",
+        "#elements": ["zero", "one", "two=2"]
+      },
+      "ESIPrefixExponents": {
+        "#type": "enum",
+        "#basetype": "char",
+        "#elements": {
+          "kilo": "3",
+          "Mega": "6"
+        },
+        "Giga": "9",
+        "Tera": {
+          "#value": "12",
+          "#docString": "That's a pretty big one"
+        }
+      },
+
+      "#type": "class",
+      "#elements": ["v=EValues", "w=ESIPrefixExponents"],
+      "#baseclass": "Foo",
+
+      "record_by_default" : "int"
+    }
+  }
+}
