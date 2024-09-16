@@ -9,7 +9,7 @@ class EnumValue(ModelNode):
     docString: str = None
 
     KNOWN_KEYS = {
-        KEY_PRIMITIVE: FIELD_VALUE,
+        KEY_PRIMITIVE: FIELD_NAME,
         KEY_NAME: FIELD_NAME,
         KEY_VALUE: FIELD_VALUE,
         KEY_DOCSTRING: FIELD_DOCSTRING

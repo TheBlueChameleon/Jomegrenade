@@ -68,7 +68,8 @@ class ModelNode(NamedElement, CtorDictHandler):
 
     @classmethod
     def from_ordered_dict(cls, descriptor: OrderedDict):
-        return cls(**cls.get_ctor_args_from(descriptor))
+        td = cls.get_ctor_args_from(descriptor)
+        return cls(**td)
 
     @classmethod
     def get_delegate_nodes(cls, delegate_class: type['ModelNode'], descriptor: OrderedDict):
@@ -76,12 +77,12 @@ class ModelNode(NamedElement, CtorDictHandler):
         forward_nodes = []
         for key, value in unused.items():
             if isinstance(value, str):
+                print("!!!", key, value)
                 forward_nodes.append(delegate_class.from_name_and_string(key, value))
             elif isinstance(value, list):
                 for item in value:
                     if isinstance(item, str):
-                        print("~~~", key, item)
-                        forward_nodes.append(delegate_class.from_name_and_string(key, item))
+                        forward_nodes.append(delegate_class.from_string(item))
                     else:
                         # TODO proper log and warning handling
                         print("warning message: unknown JSON element:", item)

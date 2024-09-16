@@ -29,6 +29,5 @@ class Config(NamedElement, CtorDictHandler):
         result = copy(self)
         for attribute, value in vars(parent).items():
             if getattr(result, attribute) is None and getattr(parent, attribute) is not None:
-                print(f"Attempt to set <{attribute}> to <{value}>")
                 setattr(result, attribute, value)
         return result
