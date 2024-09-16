@@ -1,7 +1,7 @@
 from collections import OrderedDict
 
-from Model import NamedElement, FIELD_NAME
-from Model.Base import get_type_name, ModelError, split_descriptor, CtorDictHandler, KEY_NAME
+from Model import NamedElement
+from Model.Base import get_type_name, ModelError, split_descriptor, CtorDictHandler, KEY_NAME, PrimitiveHandlingPolicy
 
 
 class ModelNode(NamedElement, CtorDictHandler):
@@ -57,8 +57,11 @@ class ModelNode(NamedElement, CtorDictHandler):
         return ""
 
     @classmethod
-    def from_string(cls, descriptor: str):
-        return cls.from_ordered_dict(split_descriptor(descriptor))
+    def from_string(
+            cls, descriptor: str,
+            primitive_handling_policy: PrimitiveHandlingPolicy = PrimitiveHandlingPolicy.default
+    ):
+        return cls.from_ordered_dict(split_descriptor(descriptor), primitive_handling_policy)
 
     @classmethod
     def from_name_and_string(cls, name: str, descriptor: str):
@@ -67,8 +70,12 @@ class ModelNode(NamedElement, CtorDictHandler):
         return cls.from_ordered_dict(d)
 
     @classmethod
-    def from_ordered_dict(cls, descriptor: OrderedDict):
-        td = cls.get_ctor_args_from(descriptor)
+    def from_ordered_dict(
+            cls,
+            descriptor: OrderedDict,
+            primitive_handling_policy: PrimitiveHandlingPolicy = PrimitiveHandlingPolicy.default
+    ):
+        td = cls.get_ctor_args_from(descriptor, primitive_handling_policy)
         return cls(**td)
 
     @classmethod
@@ -77,12 +84,11 @@ class ModelNode(NamedElement, CtorDictHandler):
         forward_nodes = []
         for key, value in unused.items():
             if isinstance(value, str):
-                print("!!!", key, value)
                 forward_nodes.append(delegate_class.from_name_and_string(key, value))
             elif isinstance(value, list):
                 for item in value:
                     if isinstance(item, str):
-                        forward_nodes.append(delegate_class.from_string(item))
+                        forward_nodes.append(delegate_class.from_string(item, PrimitiveHandlingPolicy.from_list))
                     else:
                         # TODO proper log and warning handling
                         print("warning message: unknown JSON element:", item)

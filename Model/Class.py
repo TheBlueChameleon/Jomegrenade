@@ -44,7 +44,11 @@ class Class(ModelNode):
         return self.enums + self.classes + self.records
 
     @classmethod
-    def get_ctor_args_from(cls, descriptor: OrderedDict):
-        result = super().get_ctor_args_from(descriptor)
+    def get_ctor_args_from(
+            cls,
+            descriptor: OrderedDict,
+            primitive_handling_policy: PrimitiveHandlingPolicy = PrimitiveHandlingPolicy.default
+    ):
+        result = super().get_ctor_args_from(descriptor, primitive_handling_policy)
         result[FIELD_RECORDS] = cls.get_delegate_nodes(Record, descriptor)
         return result

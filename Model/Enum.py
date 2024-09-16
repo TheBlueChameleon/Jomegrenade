@@ -34,7 +34,10 @@ class Enum(ModelNode):
         return self.values
 
     @classmethod
-    def get_ctor_args_from(cls, descriptor: OrderedDict):
-        result = super().get_ctor_args_from(descriptor)
+    def get_ctor_args_from(
+            cls, descriptor: OrderedDict,
+            primitive_handling_policy: PrimitiveHandlingPolicy = PrimitiveHandlingPolicy.default
+    ):
+        result = super().get_ctor_args_from(descriptor, primitive_handling_policy)
         result[FIELD_VALUES] = cls.get_delegate_nodes(EnumValue, descriptor)
         return result

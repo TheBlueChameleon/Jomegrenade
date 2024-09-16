@@ -1,13 +1,13 @@
 from collections import OrderedDict
 from dataclasses import dataclass
 from enum import Enum as PyEnum
-
-from sympy import primitive
+from typing import Iterator
 
 # ==================================================================================================================== #
 
 SpecialTreatment = PyEnum("SpecialTreatment", ["none", "optional", "vector"])
 VisibilityTypes = PyEnum("VisibilityType", ["private", "protected", "public"])
+PrimitiveHandlingPolicy = PyEnum('PrimitiveHandlingPolicy', ["default", "from_list"])
 
 DEFAULT_CONFIG_NAME = "#config"
 
@@ -18,7 +18,7 @@ KEY_DOCSTRING = "#docString"
 KEY_DOCSTRING_GETTER = "#docStringGetter"
 KEY_DOCSTRING_SETTER = "#docStringSetter"
 KEY_DOCSTRING_RESETTER = "#docStringResetter"
-KEY_PRIMITIVE = "#primitive"
+KEY_PRIMITIVE = type("Primitive", tuple(), dict())()        # instance of run time class Primitive
 KEY_TYPE = "#type"
 KEY_VALUE = "#value"
 
@@ -51,32 +51,37 @@ class CtorDictHandler:
     KNOWN_KEYS = dict()
 
     @classmethod
-    def get_ctor_args_from(cls, descriptor: OrderedDict):
+    def get_ctor_args_from(
+            cls,
+            descriptor: OrderedDict,
+            primitive_handling_policy: PrimitiveHandlingPolicy = PrimitiveHandlingPolicy.default
+    ):
         primitive_handled = cls.handle_primitive_pair(descriptor)
-        return {
-            cls.KNOWN_KEYS[key] : value
+        return OrderedDict(
+            (cls.KNOWN_KEYS[key], value)
             for key, value in primitive_handled.items()
             if cls.KNOWN_KEYS.get(key, None) is not None
-        }
+        )
 
     @classmethod
     def handle_primitive_pair(cls, descriptor: OrderedDict):
         if cls.PRIMITIVE_PAIR is not None:
-            key = cls.PRIMITIVE_PAIR[0]
-            val = cls.PRIMITIVE_PAIR[1]
+            primitive_key = cls.PRIMITIVE_PAIR[0]
+            primitive_val = cls.PRIMITIVE_PAIR[1]
             unknown_keys = cls.get_unknown_args_from(descriptor)
             if len(unknown_keys) == 1:
-                descriptor[key] = next(iter(unknown_keys.keys()))
-                descriptor[val] = next(iter(unknown_keys.values()))
+                descriptor[primitive_key] = next(iter(unknown_keys.keys()))
+                descriptor[primitive_val] = next(iter(unknown_keys.values()))
         return descriptor
 
     @classmethod
     def get_unknown_args_from(cls, descriptor: OrderedDict):
-        # todo: warn on any special keys (.startswith(#)
-        return {key: value
+        # todo: warn on any special keys (.startswith(#))
+        return OrderedDict(
+            (key, value)
             for key, value in descriptor.items()
-                if key not in cls.KNOWN_KEYS
-        }
+            if key not in cls.KNOWN_KEYS
+        )
 
 # ==================================================================================================================== #
 
@@ -93,7 +98,7 @@ def split_descriptor(descriptor: str) -> OrderedDict:
     #       return dict of valid portions, warn on split residue
 
     categories = descriptor.split(";")
-    paired: map[str] = map(lambda c: c.split("="), categories)
+    paired: Iterator[str] = map(lambda c: c.split("="), categories)
     stripped = list(
         tuple(element.strip() for element in pair)
         for pair in paired
