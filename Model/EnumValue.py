@@ -20,15 +20,10 @@ class EnumValue(ModelNode):
         return f": {self.value}"
 
     @classmethod
-    def get_ctor_args_from(
-            cls,
-            descriptor: OrderedDict,
-            primitive_handling_policy: PrimitiveHandlingPolicy = PrimitiveHandlingPolicy.default
-    ):
-        # todo: remove this EVIL HACK
-        if primitive_handling_policy == PrimitiveHandlingPolicy.from_list:
-            cls.KNOWN_KEYS[KEY_PRIMITIVE] = FIELD_NAME
-        result = super().get_ctor_args_from(descriptor, primitive_handling_policy)
-        if primitive_handling_policy == PrimitiveHandlingPolicy.from_list:
-            cls.KNOWN_KEYS[KEY_PRIMITIVE] = FIELD_VALUE
+    def from_list_string(cls, descriptor: str):
+        # EVIL HACK
+        cls.KNOWN_KEYS[KEY_PRIMITIVE] = FIELD_NAME
+        result = cls.from_string(descriptor)
+        cls.KNOWN_KEYS[KEY_PRIMITIVE] = FIELD_VALUE
         return result
+

@@ -7,7 +7,6 @@ from typing import Iterator
 
 SpecialTreatment = PyEnum("SpecialTreatment", ["none", "optional", "vector"])
 VisibilityTypes = PyEnum("VisibilityType", ["private", "protected", "public"])
-PrimitiveHandlingPolicy = PyEnum('PrimitiveHandlingPolicy', ["default", "from_list"])
 
 DEFAULT_CONFIG_NAME = "#config"
 
@@ -51,11 +50,7 @@ class CtorDictHandler:
     KNOWN_KEYS = dict()
 
     @classmethod
-    def get_ctor_args_from(
-            cls,
-            descriptor: OrderedDict,
-            primitive_handling_policy: PrimitiveHandlingPolicy = PrimitiveHandlingPolicy.default
-    ):
+    def get_ctor_args_from(cls, descriptor: OrderedDict):
         primitive_handled = cls.handle_primitive_pair(descriptor)
         return OrderedDict(
             (cls.KNOWN_KEYS[key], value)
@@ -83,42 +78,72 @@ class CtorDictHandler:
             if key not in cls.KNOWN_KEYS
         )
 
+    @classmethod
+    def get_delegate_nodes(cls, delegate_class: type['ModelNode'], descriptor: OrderedDict):
+        unused = cls.get_unknown_args_from(descriptor)
+        forward_nodes = []
+        for key, value in unused.items():
+            if isinstance(value, str):
+                forward_nodes.append(delegate_class.from_name_and_string(key, value))
+            elif isinstance(value, list):
+                for item in value:
+                    if isinstance(item, str):
+                        forward_nodes.append(delegate_class.from_list_string(item))
+                    else:
+                        # TODO proper log and warning handling
+                        print("warning message: unknown JSON element:", item)
+            else:
+                # TODO proper log and warning handling
+                print("warning message: unknown JSON element:", value)
+        return forward_nodes
+
+    @classmethod
+    def from_string(cls, descriptor: str):
+        return cls.from_ordered_dict(split_descriptor(descriptor))
+
+    @classmethod
+    def from_list_string(cls, descriptor: str):
+        return cls.from_string(descriptor)
+
+    @classmethod
+    def from_name_and_string(cls, name: str, descriptor: str):
+        d = split_descriptor(descriptor)
+        d[KEY_NAME] = name
+        return cls.from_ordered_dict(d)
+
+    @classmethod
+    def from_ordered_dict(cls, descriptor: OrderedDict):
+        ctor_args = cls.get_ctor_args_from(descriptor)
+        return cls(**ctor_args)
+
 # ==================================================================================================================== #
 
 def get_type_name(obj) -> str:
     return type(obj).__name__
 
 def split_descriptor(descriptor: str) -> OrderedDict:
-    # identify cases:
-    #   primitive: "int", "zero", "3"
-    #       return {"#primitive": descriptor}
-    #   structured: "key1:value1; key2 : value2    ; ..."
-    #       return { key1: value1, key2: value2, ...}
-    #   (partially) malformed: "key1; key2:value;; seg1:seg2:seg3; ..."
-    #       return dict of valid portions, warn on split residue
-
-    categories = descriptor.split(";")
-    paired: Iterator[str] = map(lambda c: c.split("="), categories)
-    stripped = list(
+    units: list[str] = descriptor.split(";")
+    unit_pairs: Iterator[list[str]] = map(lambda c: c.split("="), units)
+    stripped_pairs: list[tuple] = list(
         tuple(element.strip() for element in pair)
-        for pair in paired
+        for pair in unit_pairs
     )
 
-    if len(stripped) == 1 and len(stripped[0]) == 1:
-        return OrderedDict([(KEY_PRIMITIVE, descriptor.strip())])
+    valid_pairs: list[tuple] = []
+    malformed_pairs: list[tuple] = []
+    singles: list[tuple] = []
+    for pair in stripped_pairs:
+        if len(pair) == 1: singles.append(pair[0])
+        elif len(pair) == 2: valid_pairs.append(pair)
+        else: malformed_pairs.append(pair)
 
-    valid_pairs = filter(
-        lambda pair: len(pair) == 2,
-        stripped
-    )
     result = OrderedDict(valid_pairs)
 
-    primitive = next(filter(
-        lambda pair: len(pair) == 1,
-        stripped
-    ), None)
-    if primitive is not None:
-        result[KEY_PRIMITIVE] = primitive[0]
+    if len(singles) == 1:
+        result[KEY_PRIMITIVE] = singles[0]
+    elif len(singles) > 1:
+        print("malformed:", descriptor)
+        print("  ", singles)
 
     # todo: warn malformed
 
