@@ -13,9 +13,10 @@ class Record(ModelNode):
     docStringGetter: str = None
     docStringSetter: str = None
     docStringResetter: str = None
+    special: PyEnum = SpecialTreatment.none
     config: Config = field(default_factory=lambda: Config(DEFAULT_CONFIG_NAME))
 
-    PRIMITIVE_PAIR = (KEY_NAME, KEY_TYPE)
+    PRIMITIVE_PAIR = PrimitiveDeclaration(KEY_NAME, KEY_TYPE)
     KNOWN_KEYS = {
         KEY_PRIMITIVE: FIELD_TYPE,
         KEY_TYPE: FIELD_TYPE,
@@ -24,6 +25,7 @@ class Record(ModelNode):
         KEY_DOCSTRING_GETTER: FIELD_DOCSTRING_GETTER,
         KEY_DOCSTRING_SETTER: FIELD_DOCSTRING_SETTER,
         KEY_DOCSTRING_RESETTER: FIELD_DOCSTRING_RESETTER,
+        KEY_SPECIAL: FIELD_SPECIAL
     }
 
     def get_repr_details(self) -> str:

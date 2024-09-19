@@ -1,27 +1,27 @@
-from collections import OrderedDict
 from copy import copy
 from dataclasses import dataclass
 from enum import Enum as PyEnum
 
-from .Base import NamedElement, SpecialTreatment, CtorDictHandler
+from .ModelNode import ModelNode
+from .Base import ByReferenceTreatment
 
 
 # ==================================================================================================================== #
 
 @dataclass
-class Config(NamedElement, CtorDictHandler):
+class Config(ModelNode):
     hasGetter: bool = None
     hasSetter: bool = None
     hasResetter: bool = None
-    getByReference: bool = None
-    setByReference: bool = None
+    getByReference: ByReferenceTreatment = None
+    setByReference: ByReferenceTreatment = None
     visibilityRecord: PyEnum = None
     visibilityGetter: PyEnum = None
     visibilitySetter: PyEnum = None
     visibilityResetter: PyEnum = None
     visibilityInnerTypes: PyEnum = None
-    specialTreatment: PyEnum = SpecialTreatment.none
     isMonadic: bool = None
+    strictEnums: bool = None
 
     # TODO: KNOWN_KEYS = {...}
 

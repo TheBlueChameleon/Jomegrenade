@@ -14,7 +14,7 @@ class EnumValue(ModelNode):
         KEY_VALUE: FIELD_VALUE,
         KEY_DOCSTRING: FIELD_DOCSTRING
     }
-    PRIMITIVE_PAIR = (KEY_NAME, KEY_VALUE)
+    PRIMITIVE_PAIR = PrimitiveDeclaration(KEY_NAME, KEY_VALUE)
 
     def get_repr_details(self) -> str:
         return f": {self.value}"

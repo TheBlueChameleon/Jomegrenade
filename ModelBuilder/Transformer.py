@@ -8,7 +8,7 @@ from ModelBuilder.Base import SpecialKeysCollection, SPECIAL_KEYS_DICT
 # ==================================================================================================================== #
 
 def from_name_and_ordered_dict(cls: type, name:str, descriptor: OrderedDict):
-    return cls(name, **cls.get_ctor_args_from(descriptor))
+    return cls(name, **cls.get_ctor_args(descriptor))
 
 # ==================================================================================================================== #
 
