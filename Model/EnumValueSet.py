@@ -17,7 +17,7 @@ class EnumValueSet(ModelNode):
         super().add_with_duplicate_check(value, self.values)
 
     @classmethod
-    def get_ctor_args_from(cls, descriptor: OrderedDict):
-        result = super().get_ctor_args_from(descriptor)
+    def get_ctor_args(cls, descriptor: OrderedDict):
+        result = super().get_ctor_args(descriptor)
         result[FIELD_VALUES] = cls.get_delegate_nodes(EnumValue, descriptor)
         return result

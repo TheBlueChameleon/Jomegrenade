@@ -1,8 +1,7 @@
-from collections import OrderedDict
+from .Base import get_type_name, ModelError, NamedElement
+from .CtorDictHandler import CtorDictHandler
 
-from Model import NamedElement
-from Model.Base import get_type_name, ModelError, CtorDictHandler
-
+# ==================================================================================================================== #
 
 class ModelNode(NamedElement, CtorDictHandler):
     def add_enum_value(self, arg: NamedElement):

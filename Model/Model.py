@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 
-from .Base import VisibilityTypes, SpecialTreatment, DEFAULT_CONFIG_NAME
+from .Base import *
 from .ModelNode import ModelNode
 from .Class import Class
 from .Config import Config
@@ -19,15 +19,15 @@ class Model(ModelNode):
             hasGetter = True,
             hasSetter = True,
             hasResetter = False,
-            getByReference = True,
-            setByReference = True,
+            getByReference = ByReferenceTreatment.auto,
+            setByReference = ByReferenceTreatment.auto,
             visibilityRecord = VisibilityTypes.private,
             visibilityGetter = VisibilityTypes.public,
             visibilitySetter = VisibilityTypes.public,
             visibilityResetter = VisibilityTypes.public,
             visibilityInnerTypes = VisibilityTypes.public,
-            specialTreatment= SpecialTreatment.none,
-            isMonadic = True
+            isMonadic = True,
+            strictEnums = True
     ))
 
     def add_namespace(self, namespace: 'Namespace'):
@@ -41,3 +41,11 @@ class Model(ModelNode):
 
     def get_children(self) -> list[ModelNode]:
         return self.namespaces + self.enums + self.classes
+
+    @classmethod
+    def get_ctor_args(cls, descriptor: OrderedDict):
+        result = super().get_ctor_args(descriptor)
+        for key, value in descriptor.items():
+            print(key, value)
+        #result[FIELD_CLASSES] = cls.get_delegate_nodes(Class, descriptor)
+        return result

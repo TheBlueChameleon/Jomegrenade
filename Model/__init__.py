@@ -5,7 +5,6 @@ from .Enum import Enum
 from .EnumValue import EnumValue
 from .EnumValueSet import EnumValueSet
 from .Model import Model
-from .ModelNode import ModelNode
 from .Namespace import Namespace
 from .Record import Record
 from .RecordSet import RecordSet

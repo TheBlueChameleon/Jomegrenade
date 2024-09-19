@@ -17,7 +17,7 @@ class RecordSet(ModelNode):
         super().add_with_duplicate_check(record, self.records)
 
     @classmethod
-    def get_ctor_args_from(cls, descriptor: OrderedDict):
-        result = super().get_ctor_args_from(descriptor)
+    def get_ctor_args(cls, descriptor: OrderedDict):
+        result = super().get_ctor_args(descriptor)
         result[FIELD_RECORDS] = result[FIELD_RECORDS] = cls.get_delegate_nodes(Record, descriptor)
         return result
