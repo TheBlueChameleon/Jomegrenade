@@ -1,5 +1,5 @@
 from Model import *
-from ModelBuilder import *
+from Model.ModelBuilder import *
 
 # ==================================================================================================================== #
 

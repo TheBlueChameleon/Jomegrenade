@@ -3,8 +3,8 @@ from dataclasses import dataclass, field
 
 from sympy.codegen.cnodes import static
 
-from .Base import DEFAULT_CONFIG_NAME, KEY_PRIMITIVE, FIELD_NAME
-from .ModelNode import ModelNode
+from Model.Base import DEFAULT_CONFIG_NAME, KEY_PRIMITIVE, FIELD_NAME
+from Model.ModelNode import ModelNode
 from .Class import Class
 from .Config import Config
 from .Enum import Enum

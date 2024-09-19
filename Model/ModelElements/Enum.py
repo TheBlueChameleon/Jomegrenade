@@ -1,7 +1,7 @@
 from dataclasses import field
 
-from .Base import *
-from .ModelNode import ModelNode, NamedElement
+from Model.Base import *
+from Model.ModelNode import ModelNode, NamedElement
 from .Config import Config
 from .EnumValue import EnumValue
 from .EnumValueSet import EnumValueSet

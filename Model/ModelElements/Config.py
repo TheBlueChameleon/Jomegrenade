@@ -2,8 +2,8 @@ from copy import copy
 from dataclasses import dataclass
 from enum import Enum as PyEnum
 
-from .ModelNode import ModelNode
-from .Base import ByReferenceTreatment
+from Model.ModelNode import ModelNode
+from Model.Base import ByReferenceTreatment
 
 
 # ==================================================================================================================== #

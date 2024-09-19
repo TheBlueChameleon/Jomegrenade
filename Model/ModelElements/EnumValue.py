@@ -1,5 +1,5 @@
-from .Base import *
-from .ModelNode import ModelNode
+from Model.Base import *
+from Model.ModelNode import ModelNode
 
 # ==================================================================================================================== #
 

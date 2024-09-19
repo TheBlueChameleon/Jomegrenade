@@ -4,25 +4,10 @@ from Model import *
 
 # ==================================================================================================================== #
 
-TYPENAME_CLASS = "class"
-TYPENAME_ENUM = "enum"
-TYPENAME_NAMESPACE = "namespace"
-
-TYPENAME_TO_TYPE = {
-    TYPENAME_CLASS: Class,
-    TYPENAME_ENUM: Enum,
-    TYPENAME_NAMESPACE: Namespace
-}
-
 @dataclass(frozen=True)
 class SpecialKey:
     key: str
     content_class: type
-
-SK_TYPE = SpecialKey('#type', str)
-SK_CONFIG = SpecialKey('#config', Config)
-SK_RECORDS = SpecialKey('#elements', RecordSet)
-SK_ENUM_VALUES = SpecialKey('#elements', EnumValueSet)
 
 @dataclass
 class SpecialKeysCollection:
@@ -37,6 +22,23 @@ class SpecialKeysCollection:
 
     def get_key_set(self):
         return self.keys
+
+# ==================================================================================================================== #
+
+TYPENAME_CLASS = "class"
+TYPENAME_ENUM = "enum"
+TYPENAME_NAMESPACE = "namespace"
+
+TYPENAME_TO_TYPE = {
+    TYPENAME_CLASS: Class,
+    TYPENAME_ENUM: Enum,
+    TYPENAME_NAMESPACE: Namespace
+}
+
+SK_TYPE = SpecialKey('#type', str)
+SK_CONFIG = SpecialKey('#config', Config)
+SK_RECORDS = SpecialKey('#elements', RecordSet)
+SK_ENUM_VALUES = SpecialKey('#elements', EnumValueSet)
 
 SPECIAL_KEYS_DICT = {
     Class : SpecialKeysCollection(

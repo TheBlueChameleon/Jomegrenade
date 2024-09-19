@@ -1,7 +1,7 @@
 from dataclasses import field
 
-from .Base import *
-from .ModelNode import ModelNode
+from Model.Base import *
+from Model.ModelNode import ModelNode
 from .Config import Config
 
 # ==================================================================================================================== #

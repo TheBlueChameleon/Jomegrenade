@@ -1,23 +1,23 @@
 from collections import OrderedDict
 from dataclasses import dataclass, field
 
-from .Base import DEFAULT_CONFIG_NAME, FIELD_RECORDS
-from .Record import Record
-from .ModelNode import ModelNode
+from Model.Base import DEFAULT_CONFIG_NAME, FIELD_VALUES
+from .Enum import EnumValue
+from Model.ModelNode import ModelNode
 from .Config import Config
 
 # ==================================================================================================================== #
 
 @dataclass
-class RecordSet(ModelNode):
-    records: list[Record] = field(default_factory=lambda: [])
+class EnumValueSet(ModelNode):
+    values: list[EnumValue] = field(default_factory=lambda: [])
     config: Config = field(default_factory=lambda: Config(DEFAULT_CONFIG_NAME))
 
-    def add_record(self, record: Record):
-        super().add_with_duplicate_check(record, self.records)
+    def add_enum_value(self, value: EnumValue):
+        super().add_with_duplicate_check(value, self.values)
 
     @classmethod
     def get_ctor_args(cls, descriptor: OrderedDict):
         result = super().get_ctor_args(descriptor)
-        result[FIELD_RECORDS] = result[FIELD_RECORDS] = cls.get_delegate_nodes(Record, descriptor)
+        result[FIELD_VALUES] = cls.get_delegate_nodes(EnumValue, descriptor)
         return result

@@ -1,8 +1,8 @@
 from dataclasses import field
 
 from Model import *
-from Model.Base import get_type_name, NamedElement
-from ModelBuilder.Base import SpecialKeysCollection, SPECIAL_KEYS_DICT
+from Model.Base import NamedElement
+from Model.ModelBuilder.Base import SpecialKeysCollection, SPECIAL_KEYS_DICT
 
 
 # ==================================================================================================================== #

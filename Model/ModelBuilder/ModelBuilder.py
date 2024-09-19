@@ -3,8 +3,8 @@ __all__ = ["get_model_from_file"]
 import json
 
 from Model import *
-from ModelBuilder.Base import SK_TYPE, TYPENAME_TO_TYPE
-from ModelBuilder.Transformer import Transformer
+from Model.ModelBuilder.Base import SK_TYPE, TYPENAME_TO_TYPE
+from Model.ModelBuilder.Transformer import Transformer
 
 
 # ==================================================================================================================== #
