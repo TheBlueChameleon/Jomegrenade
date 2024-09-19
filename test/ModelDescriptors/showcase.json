@@ -1,15 +1,18 @@
 {
   "#config": {},
 
-  "PrimitiveClass" : "#type=class, x=int",
-  "PrimitiveEnum": "#type=enum, x=1",
+  "PrimitiveClass" : "#type=class; x=int",
+  "PrimitiveEnum": "#type=enum; x=1",
+  "PrimitiveNamespace": "#type=namespace",
+  "DefaultNamespace": "",
 
   "Project": {
     "#type": "namespace",
 
     "EmptyNameSpace": {},
 
-    "EmptyClass" : "#type=class, x=int",
+    "NamespacedPrimitiveClass" : "#type=class, x=int",
+    "NamespacedPrimitiveEnum" : "#type=enum, x=1",
 
     "Foo": {
       "#type": "class",

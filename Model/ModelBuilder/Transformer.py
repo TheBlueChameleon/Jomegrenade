@@ -1,13 +1,17 @@
 from dataclasses import field
+from typing import Any
+
+from .Base import SpecialKeysCollection
 
 from Model import *
-from Model.Base import NamedElement
-from Model.ModelBuilder.Base import SpecialKeysCollection, SPECIAL_KEYS_DICT
+from Model.Glue import SPECIAL_KEYS_DICT
+from Model.ModelNode import ModelNode
+from ..CtorDictHandler import CtorDictHandler
 
 
 # ==================================================================================================================== #
 
-def from_name_and_ordered_dict(cls: type, name:str, descriptor: OrderedDict):
+def from_name_and_ordered_dict(cls: type[CtorDictHandler, NamedElement, Any], name:str, descriptor: OrderedDict):
     return cls(name, **cls.get_ctor_args(descriptor))
 
 # ==================================================================================================================== #

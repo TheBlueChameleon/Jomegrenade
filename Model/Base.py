@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from enum import Enum as PyEnum
 from typing import Iterator
 
+
 # ==================================================================================================================== #
 # base types
 
@@ -30,7 +31,7 @@ KEY_DOCSTRING = "#docString"
 KEY_DOCSTRING_GETTER = "#docStringGetter"
 KEY_DOCSTRING_SETTER = "#docStringSetter"
 KEY_DOCSTRING_RESETTER = "#docStringResetter"
-KEY_PRIMITIVE = type("Primitive", tuple(), dict())()        # instance of run time class Primitive
+KEY_PRIMITIVE = type("Primitive", tuple(), dict())()        # disallow an explicit primitive key in the JSON model
 KEY_SPECIAL = "#special"
 KEY_TYPE = "#type"
 KEY_VALUE = "#value"
@@ -49,36 +50,13 @@ FIELD_TYPE = "type"
 FIELD_VALUE = "value"
 FIELD_VALUES = "values"
 
+TYPENAME_CLASS = "class"
+TYPENAME_ENUM = "enum"
+TYPENAME_NAMESPACE = "namespace"
+
 # ==================================================================================================================== #
 # public util funcs
 
 def get_type_name(obj) -> str:
     return type(obj).__name__
 
-def split_descriptor(descriptor: str) -> OrderedDict:
-    units: list[str] = descriptor.split(";")
-    unit_pairs: Iterator[list[str]] = map(lambda c: c.split("="), units)
-    stripped_pairs: list[tuple] = list(
-        tuple(element.strip() for element in pair)
-        for pair in unit_pairs
-    )
-
-    valid_pairs: list[tuple] = []
-    malformed_pairs: list[tuple] = []
-    singles: list[tuple] = []
-    for pair in stripped_pairs:
-        if len(pair) == 1: singles.append(pair[0])
-        elif len(pair) == 2: valid_pairs.append(pair)
-        else: malformed_pairs.append(pair)
-
-    result = OrderedDict(valid_pairs)
-
-    if len(singles) == 1:
-        result[KEY_PRIMITIVE] = singles[0]
-    elif len(singles) > 1:
-        print("malformed:", descriptor)
-        print("  ", singles)
-
-    # todo: warn malformed
-
-    return result

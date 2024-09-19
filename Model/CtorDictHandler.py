@@ -2,6 +2,7 @@ from typing import Any
 
 from . import ModelNode
 from .Base import *
+from .DescriptorHandler import split_descriptor
 
 # ==================================================================================================================== #
 
@@ -69,9 +70,9 @@ class CtorDictHandler:
 
     @classmethod
     def from_name_and_string(cls, name: str, descriptor: str):
-        d = split_descriptor(descriptor)
-        d[KEY_NAME] = name
-        return cls.from_ordered_dict(d)
+        od = split_descriptor(descriptor)
+        od[KEY_NAME] = name
+        return cls.from_ordered_dict(od)
 
     @classmethod
     def from_ordered_dict(cls: type['CtorDictHandler', Any], descriptor: OrderedDict):

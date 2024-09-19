@@ -1,4 +1,4 @@
-from dataclasses import dataclass, field
+from dataclasses import field
 
 from Model.Base import *
 from Model.ModelNode import ModelNode
@@ -6,6 +6,8 @@ from .Class import Class
 from .Config import Config
 from .Enum import Enum
 from .Namespace import Namespace
+from ..DescriptorHandler import split_descriptor, get_explicit_node_type_or
+
 
 # ==================================================================================================================== #
 
@@ -46,6 +48,7 @@ class Model(ModelNode):
     def get_ctor_args(cls, descriptor: OrderedDict):
         result = super().get_ctor_args(descriptor)
         for key, value in descriptor.items():
-            print(key, value)
-        #result[FIELD_CLASSES] = cls.get_delegate_nodes(Class, descriptor)
+            vd = split_descriptor(value)
+            print(key, vd, get_explicit_node_type_or(vd, Namespace).__name__)
+        result[FIELD_CLASSES] = cls.get_delegate_nodes(Class, descriptor)
         return result
