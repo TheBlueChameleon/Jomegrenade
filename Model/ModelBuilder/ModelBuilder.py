@@ -4,8 +4,9 @@ import json
 
 from Model import *
 from Model import ModelNode
-from Model.Glue import SK_TYPE, TYPENAME_TO_TYPE
-from Model.ModelBuilder.Transformer import Transformer
+from Model.Glue import TYPENAME_TO_TYPE
+from .Base import SK_TYPE
+from .Transformer import Transformer
 
 
 # ==================================================================================================================== #

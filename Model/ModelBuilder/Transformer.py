@@ -1,12 +1,11 @@
 from dataclasses import field
 from typing import Any
 
-from .Base import SpecialKeysCollection
+from .Base import SpecialKeysCollection, SPECIAL_KEYS_DICT
 
 from Model import *
-from Model.Glue import SPECIAL_KEYS_DICT
 from Model.ModelNode import ModelNode
-from ..CtorDictHandler import CtorDictHandler
+from Model.CtorDictHandler import CtorDictHandler
 
 
 # ==================================================================================================================== #
