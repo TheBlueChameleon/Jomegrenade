@@ -1,7 +1,8 @@
-from collections import OrderedDict, namedtuple
+from collections import namedtuple
 from dataclasses import dataclass
 from enum import Enum as PyEnum
-from typing import Iterator
+
+from Model.MetaCode import Singleton
 
 
 # ==================================================================================================================== #
@@ -17,7 +18,11 @@ SpecialTreatment = PyEnum("SpecialTreatment", ["none", "optional", "vector"])
 ByReferenceTreatment = PyEnum("ByReferenceTreatment", ["true", "false", "auto"])
 VisibilityTypes = PyEnum("VisibilityType", ["private", "protected", "public"])
 
-PrimitiveDeclaration = namedtuple("PrimitiveDeclaration", ["field_key", "field_value"])
+ImplicitDeclaration = namedtuple("ImplicitDeclaration", ["field_key", "field_value"])
+
+class ImplicitKey(metaclass=Singleton):
+    def __repr__(self):
+        return "<IMPLICIT KEY OBJECT>"
 
 # ==================================================================================================================== #
 # constants
@@ -31,7 +36,7 @@ KEY_DOCSTRING = "#docString"
 KEY_DOCSTRING_GETTER = "#docStringGetter"
 KEY_DOCSTRING_SETTER = "#docStringSetter"
 KEY_DOCSTRING_RESETTER = "#docStringResetter"
-KEY_PRIMITIVE = type("Primitive", tuple(), dict())()        # disallow an explicit primitive key in the JSON model
+KEY_IMPLICIT = ImplicitKey()
 KEY_SPECIAL = "#special"
 KEY_TYPE = "#type"
 KEY_VALUE = "#value"

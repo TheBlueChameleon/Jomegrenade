@@ -1,7 +1,7 @@
 from collections import OrderedDict
 from typing import Iterator
 
-from Model import KEY_PRIMITIVE, KEY_TYPE
+from Model import KEY_IMPLICIT, KEY_TYPE
 
 # ==================================================================================================================== #
 
@@ -24,7 +24,7 @@ def split_descriptor(descriptor: str) -> OrderedDict:
     result = OrderedDict(valid_pairs)
 
     if len(singles) == 1:
-        result[KEY_PRIMITIVE] = singles[0]
+        result[KEY_IMPLICIT] = singles[0]
     elif len(singles) > 1:
         print("malformed:", descriptor)
         print("  ", singles)

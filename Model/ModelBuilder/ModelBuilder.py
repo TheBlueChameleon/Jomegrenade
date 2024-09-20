@@ -1,6 +1,7 @@
 __all__ = ["get_model_from_file"]
 
 import json
+from collections import OrderedDict
 
 from Model import *
 from Model import ModelNode

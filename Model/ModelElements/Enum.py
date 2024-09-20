@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from dataclasses import field
 
 from Model.Base import *
@@ -17,7 +18,7 @@ class Enum(ModelNode):
     config: Config = field(default_factory=lambda: Config(DEFAULT_CONFIG_NAME))
 
     KNOWN_KEYS = {
-        KEY_PRIMITIVE: FIELD_NAME,
+        KEY_IMPLICIT: FIELD_NAME,
         KEY_NAME: FIELD_NAME,
         KEY_BASECLASS : FIELD_BASECLASS,
         KEY_TYPE: None

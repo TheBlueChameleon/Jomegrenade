@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 
 from sympy.codegen.cnodes import static
 
-from Model.Base import DEFAULT_CONFIG_NAME, KEY_PRIMITIVE, FIELD_NAME
+from Model.Base import DEFAULT_CONFIG_NAME, KEY_IMPLICIT, FIELD_NAME
 from Model.ModelNode import ModelNode
 from .Class import Class
 from .Config import Config
@@ -20,7 +20,7 @@ class Namespace(ModelNode):
     config: Config = field(default_factory=lambda: Config(DEFAULT_CONFIG_NAME))
 
     KNOWN_KEYS = {
-        KEY_PRIMITIVE: FIELD_NAME,
+        KEY_IMPLICIT: FIELD_NAME,
     }
 
     def add_namespace(self, namespace: 'Namespace'):

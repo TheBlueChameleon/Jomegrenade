@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from typing import Any
 
 from . import ModelNode
@@ -7,12 +8,12 @@ from .DescriptorHandler import split_descriptor
 # ==================================================================================================================== #
 
 class CtorDictHandler:
-    PRIMITIVE_PAIR: PrimitiveDeclaration | None = None
+    IMPLICIT_PAIR: ImplicitDeclaration | None = None
     KNOWN_KEYS = dict()
 
     @classmethod
     def get_ctor_args(cls, descriptor: OrderedDict) -> OrderedDict[str, Any]:
-        cls.handle_primitive_pair(descriptor)
+        cls.handle_implicit_pair(descriptor)
         return OrderedDict(
             (cls.KNOWN_KEYS[key], value)
             for key, value in descriptor.items()
@@ -20,12 +21,12 @@ class CtorDictHandler:
         )
 
     @classmethod
-    def handle_primitive_pair(cls, descriptor: OrderedDict):
-        if cls.PRIMITIVE_PAIR is not None:
+    def handle_implicit_pair(cls, descriptor: OrderedDict):
+        if cls.IMPLICIT_PAIR is not None:
             unknown_keys = cls.get_unknown_args(descriptor)
             if len(unknown_keys) == 1:
-                descriptor[cls.PRIMITIVE_PAIR.field_key] = next(iter(unknown_keys.keys()))
-                descriptor[cls.PRIMITIVE_PAIR.field_value] = next(iter(unknown_keys.values()))
+                descriptor[cls.IMPLICIT_PAIR.field_key] = next(iter(unknown_keys.keys()))
+                descriptor[cls.IMPLICIT_PAIR.field_value] = next(iter(unknown_keys.values()))
 
     @classmethod
     def get_config_args(cls, descriptor: OrderedDict):

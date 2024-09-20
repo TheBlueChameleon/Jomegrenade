@@ -16,9 +16,9 @@ class Record(ModelNode):
     special: PyEnum = SpecialTreatment.none
     config: Config = field(default_factory=lambda: Config(DEFAULT_CONFIG_NAME))
 
-    PRIMITIVE_PAIR = PrimitiveDeclaration(KEY_NAME, KEY_TYPE)
+    IMPLICIT_PAIR = ImplicitDeclaration(KEY_NAME, KEY_TYPE)
     KNOWN_KEYS = {
-        KEY_PRIMITIVE: FIELD_TYPE,
+        KEY_IMPLICIT: FIELD_TYPE,
         KEY_TYPE: FIELD_TYPE,
         KEY_NAME: FIELD_NAME,
         KEY_DEFAULT: FIELD_DEFAULT,
