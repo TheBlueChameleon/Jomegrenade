@@ -1,9 +1,11 @@
 from .Base import get_type_name, ModelError, NamedElement
 from .CtorDictHandler import CtorDictHandler
+from .MetaCode import RegisterModelTypeMeta
+
 
 # ==================================================================================================================== #
 
-class ModelNode(NamedElement, CtorDictHandler):
+class ModelNode(NamedElement, CtorDictHandler, metaclass=RegisterModelTypeMeta):
     def add_enum_value(self, arg: NamedElement):
         raise self.get_add_error_type(arg)
 

@@ -4,7 +4,6 @@ import json
 
 from Model import *
 from Model import ModelNode
-from Model.Glue import TYPENAME_TO_TYPE
 from .Base import SK_TYPE
 from .Transformer import Transformer
 
@@ -51,7 +50,7 @@ def get_node_type(name: str, content: OrderedDict, parent: Transformer):
 
     if node_type is None:
         type_name = content.get(SK_TYPE.key, None)
-        node_type = TYPENAME_TO_TYPE.get(type_name, None)
+        node_type = REGISTERED_TYPES.get(type_name, None)
 
     if node_type is None:
         node_type = special_keys_collection.default

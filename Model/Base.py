@@ -54,6 +54,9 @@ TYPENAME_CLASS = "class"
 TYPENAME_ENUM = "enum"
 TYPENAME_NAMESPACE = "namespace"
 
+REGISTERED_TYPES = dict()
+    # types are registered on definition in ModelElements submodule
+
 # ==================================================================================================================== #
 # public util funcs
 
