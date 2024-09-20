@@ -1,5 +1,5 @@
-import Model
 from Model import *
+from Model.DescriptorHandler import split_descriptor
 
 # ==================================================================================================================== #
 

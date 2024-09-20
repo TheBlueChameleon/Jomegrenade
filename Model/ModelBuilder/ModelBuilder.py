@@ -5,7 +5,7 @@ from collections import OrderedDict
 
 from Model import *
 from Model import ModelNode
-from .Base import SK_TYPE
+from .Base import KM_TYPE
 from .Transformer import Transformer
 
 
@@ -46,14 +46,14 @@ def get_node_transformer(name: str, content: OrderedDict, parent: Transformer):
         return None
 
 def get_node_type(name: str, content: OrderedDict, parent: Transformer):
-    special_keys_collection = parent.get_special_keys_collection()
-    node_type = special_keys_collection.get_model_class_or_none(name)
+    key_mapping_set = parent.get_key_mapping_set()
+    node_type = key_mapping_set.get_model_class_or_none(name)
 
     if node_type is None:
-        type_name = content.get(SK_TYPE.key, None)
+        type_name = content.get(KM_TYPE.key, None)
         node_type = REGISTERED_TYPES.get(type_name, None)
 
     if node_type is None:
-        node_type = special_keys_collection.default
+        node_type = key_mapping_set.default
 
     return node_type

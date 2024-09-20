@@ -6,13 +6,13 @@ from Model import *
 # base types
 
 @dataclass(frozen=True)
-class SpecialKey:
+class KeyMapping:
     key: str
     content_class: type
 
 @dataclass
-class SpecialKeysCollection:
-    keys: set[SpecialKey]
+class KeyMappingSet:
+    keys: set[KeyMapping]
     default: type | None
 
     def get_model_class_or_none(self, key):
@@ -26,46 +26,46 @@ class SpecialKeysCollection:
 
 # ==================================================================================================================== #
 
-SK_TYPE = SpecialKey('#type', str)
-SK_CONFIG = SpecialKey('#config', Config)
-SK_RECORDS = SpecialKey('#elements', RecordSet)
-SK_ENUM_VALUES = SpecialKey('#elements', EnumValueSet)
+KM_TYPE = KeyMapping('#type', str)
+KM_CONFIG = KeyMapping('#config', Config)
+KM_RECORDS = KeyMapping('#elements', RecordSet)
+KM_ENUM_VALUES = KeyMapping('#elements', EnumValueSet)
 
-SPECIAL_KEYS_DICT = {
-    Class : SpecialKeysCollection(
-        {SK_CONFIG, SK_RECORDS},
+REGISTERED_KEY_MAPPING_SETS = {
+    Class : KeyMappingSet(
+        {KM_CONFIG, KM_RECORDS},
         Record
     ),
-    Config : SpecialKeysCollection(
-        {SK_CONFIG},
+    Config : KeyMappingSet(
+        {KM_CONFIG},
         None
     ),
-    Enum : SpecialKeysCollection(
-        {SK_CONFIG, SK_ENUM_VALUES},
+    Enum : KeyMappingSet(
+        {KM_CONFIG, KM_ENUM_VALUES},
         EnumValue
     ),
-    EnumValue : SpecialKeysCollection(
-        {SK_CONFIG},
+    EnumValue : KeyMappingSet(
+        {KM_CONFIG},
         None
     ),
-    EnumValueSet : SpecialKeysCollection(
-        {SK_CONFIG},
+    EnumValueSet : KeyMappingSet(
+        {KM_CONFIG},
         EnumValue
     ),
-    Model : SpecialKeysCollection(
-        {SK_CONFIG},
+    Model : KeyMappingSet(
+        {KM_CONFIG},
         Namespace
     ),
-    Namespace : SpecialKeysCollection(
-        {SK_CONFIG},
+    Namespace : KeyMappingSet(
+        {KM_CONFIG},
         Namespace
     ),
-    Record : SpecialKeysCollection(
-        {SK_CONFIG},
+    Record : KeyMappingSet(
+        {KM_CONFIG},
         None
     ),
-    RecordSet : SpecialKeysCollection(
-        {SK_CONFIG},
+    RecordSet : KeyMappingSet(
+        {KM_CONFIG},
         Record
     )
 }

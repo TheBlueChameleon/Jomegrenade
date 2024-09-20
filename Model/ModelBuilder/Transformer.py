@@ -2,7 +2,7 @@ from collections import OrderedDict
 from dataclasses import field
 from typing import Any
 
-from .Base import SpecialKeysCollection, SPECIAL_KEYS_DICT
+from .Base import KeyMappingSet, REGISTERED_KEY_MAPPING_SETS
 
 from Model import *
 from Model.ModelNode import ModelNode
@@ -52,8 +52,8 @@ class Transformer:
         elif isinstance(arg, RecordSet):
             self.node.add_record_set(arg)
 
-    def get_special_keys_collection(self) -> SpecialKeysCollection:
-        return SPECIAL_KEYS_DICT[self.nodeType]
+    def get_key_mapping_set(self) -> KeyMappingSet:
+        return REGISTERED_KEY_MAPPING_SETS[self.nodeType]
 
     def get_node_type_name(self) -> str:
         return self.nodeType.__name__
