@@ -5,6 +5,7 @@ from . import ModelNode
 from .Base import *
 from .DescriptorHandler import split_descriptor
 
+
 # ==================================================================================================================== #
 
 class CtorDictHandler:
