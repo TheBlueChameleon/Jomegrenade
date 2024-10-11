@@ -8,6 +8,7 @@ from .Enum import Enum
 from .Record import Record
 from .RecordSet import RecordSet
 
+
 # ==================================================================================================================== #
 
 @dataclass

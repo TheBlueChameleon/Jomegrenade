@@ -23,11 +23,16 @@ class CtorDictHandler:
 
     @classmethod
     def handle_implicit_pair(cls, descriptor: OrderedDict):
+        def get_first_key(od: OrderedDict):
+            return next(iter(od.keys()))
+        def get_first_value(od: OrderedDict):
+            return next(iter(od.values()))
+
         if cls.IMPLICIT_PAIR is not None:
             unknown_keys = cls.get_unknown_args(descriptor)
             if len(unknown_keys) == 1:
-                descriptor[cls.IMPLICIT_PAIR.field_key] = next(iter(unknown_keys.keys()))
-                descriptor[cls.IMPLICIT_PAIR.field_value] = next(iter(unknown_keys.values()))
+                descriptor[cls.IMPLICIT_PAIR.field_key] = get_first_key(unknown_keys)
+                descriptor[cls.IMPLICIT_PAIR.field_value] = get_first_value(unknown_keys)
 
     @classmethod
     def get_config_args(cls, descriptor: OrderedDict):
@@ -46,6 +51,10 @@ class CtorDictHandler:
     @classmethod
     def get_delegate_nodes(cls, delegate_class: type[ModelNode], descriptor: OrderedDict):
         unused = cls.get_unknown_args(descriptor)
+        impl = descriptor.get(KEY_IMPLICIT, None)
+        if impl is not None:
+            unused[KEY_IMPLICIT] = descriptor[KEY_IMPLICIT]
+
         forward_nodes = []
         for key, value in unused.items():
             if isinstance(value, str):

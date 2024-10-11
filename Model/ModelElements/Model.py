@@ -54,11 +54,12 @@ class Model(ModelNode):
 
     @classmethod
     def get_ctor_args(cls, descriptor: OrderedDict):
+        # todo: de-duplicate (direct copy to Namespace; consider deviation in Class, Enum)
         result = super().get_ctor_args(descriptor)
         unused = cls.get_unknown_args(descriptor)
         for name, element_descriptor in unused.items():
             delegate_descriptor = split_descriptor(element_descriptor)
-            delegate_class = get_explicit_node_type_or(delegate_descriptor, Namespace)
+            delegate_class: ModelNode = get_explicit_node_type_or(delegate_descriptor, Namespace)
 
             delegate_descriptor[KEY_NAME] = name
             if KEY_TYPE in delegate_descriptor.keys():
@@ -68,7 +69,7 @@ class Model(ModelNode):
 
             target = cls.DELEGATE_RESULT_RECEIVERS.get(target_name, None)
             if target is not None:
-                instance = delegate_class.from_ordered_dict(delegate_descriptor)
+                instance = delegate_class.from_name_and_string(name, element_descriptor)
                 if target not in result.keys():
                     result[target] = []
                 result[target].append(instance)

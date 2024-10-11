@@ -30,7 +30,7 @@ class ModelNode(NamedElement, CtorDictHandler, metaclass=RegisterModelTypeMeta):
             elements.append(arg)
 
     def get_structured_repr(self, include_config: bool = False) -> str:
-        def get_structured_repr_impl(container : ModelNode, depth: int = 0) -> list[str]:
+        def get_structured_repr_impl(container : ModelNode, depth: int = 1) -> list[str]:
             result = []
             for node in container.get_children():
                 result.append(f"{' ' * depth}{node.name} ({get_type_name(node)}){node.get_repr_details()}")
@@ -38,8 +38,8 @@ class ModelNode(NamedElement, CtorDictHandler, metaclass=RegisterModelTypeMeta):
                 result.extend(lines_)
             return result
 
-        lines = get_structured_repr_impl(self)
-        return "\n".join(lines) if len(lines) > 0 else "<empty>"
+        lines = [self.name] + get_structured_repr_impl(self)
+        return "\n".join(lines)
 
     def get_children(self) -> list['ModelNode']:
         return []

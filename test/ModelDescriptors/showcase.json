@@ -1,7 +1,7 @@
 {
   "#config": {},
 
-  "SimpleClass" : "#type=class; x=int",
+  "SimpleClass" : "#type=class; x=int;y=single",
   "SimpleEnum": "#type=enum; x=1;y;z",
   "SimpleExplicitNamespace": "#type=namespace",
   "SimpleImplicitNamespace": "namespace",
@@ -13,7 +13,7 @@
     "EmptyNameSpace": {},
 
     "NamespacedSimpleClass" : "#type=class, x=int",
-    "NamespacedSimpleEnum" : "#type=enum, x=1",
+    "NamespacedSimpleEnum" : "#type=enum, x=1;y",
 
     "Foo": {
       "#type": "class",
