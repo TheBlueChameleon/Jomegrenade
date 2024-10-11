@@ -33,14 +33,21 @@ class Model(ModelNode):
             strictEnums = True
     ))
 
-    def add_namespace(self, namespace: 'Namespace'):
-        super().add_with_duplicate_check(namespace, self.namespaces)
+    DELEGATE_RESULT_RECEIVERS = {
+        TYPENAME_CLASS: FIELD_CLASSES,
+        TYPENAME_ENUM: FIELD_ENUMS,
+        TYPENAME_NAMESPACE: FIELD_NAMESPACES
+    }
 
-    def add_enum(self, enum: Enum):
-        super().add_with_duplicate_check(enum, self.enums)
-
-    def add_class(self, cls: 'Class'):
-        super().add_with_duplicate_check(cls, self.classes)
+    def add(self, item: NamedElement):
+        if isinstance(item, type(self)):
+            super().add_with_duplicate_check(item, self.namespaces)
+        if isinstance(item, Enum):
+            super().add_with_duplicate_check(item, self.enums)
+        if isinstance(item, Class):
+            super().add_with_duplicate_check(item, self.classes)
+        if isinstance(item, Namespace):
+            super().add_with_duplicate_check(item, self.namespaces)
 
     def get_children(self) -> list[ModelNode]:
         return self.namespaces + self.enums + self.classes
@@ -48,8 +55,25 @@ class Model(ModelNode):
     @classmethod
     def get_ctor_args(cls, descriptor: OrderedDict):
         result = super().get_ctor_args(descriptor)
-        for key, value in descriptor.items():
-            vd = split_descriptor(value)
-            print(key, vd, get_explicit_node_type_or(vd, Namespace).__name__)
-        result[FIELD_CLASSES] = cls.get_delegate_nodes(Class, descriptor)
+        for name, element_descriptor in descriptor.items():
+            delegate_descriptor = split_descriptor(element_descriptor)
+            delegate_class = get_explicit_node_type_or(delegate_descriptor, Namespace)
+
+            delegate_descriptor[KEY_NAME] = name
+            if KEY_TYPE in delegate_descriptor.keys():
+                target_name = delegate_descriptor.pop(KEY_TYPE)
+            else:
+                target_name = TYPENAME_NAMESPACE
+
+            target = cls.DELEGATE_RESULT_RECEIVERS.get(target_name, None)
+            instance = None
+            if target is not None:
+                instance = cls.get_delegate_nodes(delegate_class, delegate_descriptor)
+                if target not in result.keys():
+                    result[target] = []
+                result[target].append(instance[0])
+
+            print(name, ":", instance[0])
+            print("   ", delegate_descriptor)
+
         return result

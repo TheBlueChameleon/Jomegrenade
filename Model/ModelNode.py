@@ -14,25 +14,7 @@ class RegisterModelTypeMeta(type['ModelNode']):
 # ==================================================================================================================== #
 
 class ModelNode(NamedElement, CtorDictHandler, metaclass=RegisterModelTypeMeta):
-    def add_enum_value(self, arg: NamedElement):
-        raise self.get_add_error_type(arg)
-
-    def add_enum_value_set(self, arg: NamedElement):
-        raise self.get_add_error_type(arg)
-
-    def add_record(self, arg: NamedElement):
-        raise self.get_add_error_type(arg)
-
-    def add_record_set(self, arg: NamedElement):
-        raise self.get_add_error_type(arg)
-
-    def add_enum(self, arg: NamedElement):
-        raise self.get_add_error_type(arg)
-
-    def add_class(self, arg: NamedElement):
-        raise self.get_add_error_type(arg)
-
-    def add_namespace(self, arg: NamedElement):
+    def add(self, arg: NamedElement):
         raise self.get_add_error_type(arg)
 
     def get_base_add_error_message(self, arg: NamedElement) -> str:
@@ -57,7 +39,7 @@ class ModelNode(NamedElement, CtorDictHandler, metaclass=RegisterModelTypeMeta):
             return result
 
         lines = get_structured_repr_impl(self)
-        return "\n".join(lines) if len(lines) > 0 else ["<empty>"]
+        return "\n".join(lines) if len(lines) > 0 else "<empty>"
 
     def get_children(self) -> list['ModelNode']:
         return []

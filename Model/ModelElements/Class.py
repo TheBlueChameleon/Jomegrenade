@@ -28,18 +28,16 @@ class Class(ModelNode):
         KEY_TYPE : None
     }
 
-    def add_enum(self, enum: Enum):
-        super().add_with_duplicate_check(enum, self.enums)
-
-    def add_class(self, cls: 'Class'):
-        super().add_with_duplicate_check(cls, self.classes)
-
-    def add_record(self, record: Record):
-        super().add_with_duplicate_check(record, self.records)
-
-    def add_record_set(self, arg: RecordSet):
-        for record in arg.records:
-            self.add_record(record)
+    def add(self, item: ModelNode):
+        if isinstance(item, Enum):
+            super().add_with_duplicate_check(item, self.enums)
+        elif isinstance(item, type(self)):
+            super().add_with_duplicate_check(item, self.classes)
+        elif isinstance(item, Record):
+            super().add_with_duplicate_check(item, self.records)
+        elif isinstance(item, RecordSet):
+            for record in item.records:
+                self.add(record)
 
     def get_children(self) -> list[ModelNode]:
         return self.enums + self.classes + self.records

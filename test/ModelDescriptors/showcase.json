@@ -2,9 +2,10 @@
   "#config": {},
 
   "SimpleClass" : "#type=class; x=int",
-  "SimpleEnum": "#type=enum; x=1",
+  "SimpleEnum": "#type=enum; x=1;y;z",
   "SimpleExplicitNamespace": "#type=namespace",
-  "SimpleImplicitNamespace": "",
+  "SimpleImplicitNamespace": "namespace",
+  "SimpleEmptyNamespace": "",
 
   "Project": {
     "#type": "namespace",

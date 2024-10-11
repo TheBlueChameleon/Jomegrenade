@@ -22,7 +22,7 @@ def traverse(node: OrderedDict, target: Transformer, parent: Transformer, depth:
     for key, value in node.items():
         transformer = get_node_transformer(key, value, target)
 
-        if transformer:
+        if transformer is not None:
             parent = target
             target = transformer
         else:
@@ -38,7 +38,7 @@ def get_node_transformer(name: str, content: OrderedDict, parent: Transformer):
 
     node_type = get_node_type(name, content, parent)
 
-    if node_type:
+    if node_type is not None:
         result = Transformer(name, node_type)
         parent.add_child_transformer(result)
         return result

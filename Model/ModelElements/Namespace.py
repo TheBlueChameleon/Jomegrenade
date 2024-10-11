@@ -1,13 +1,12 @@
-from collections import OrderedDict
 from dataclasses import dataclass, field
-
-from sympy.codegen.cnodes import static
 
 from Model.Base import DEFAULT_CONFIG_NAME, KEY_IMPLICIT, FIELD_NAME
 from Model.ModelNode import ModelNode
 from .Class import Class
 from .Config import Config
 from .Enum import Enum
+from .. import KEY_NAME, NamedElement
+
 
 # ==================================================================================================================== #
 
@@ -21,16 +20,16 @@ class Namespace(ModelNode):
 
     KNOWN_KEYS = {
         KEY_IMPLICIT: FIELD_NAME,
+        KEY_NAME: FIELD_NAME
     }
 
-    def add_namespace(self, namespace: 'Namespace'):
-        super().add_with_duplicate_check(namespace, self.namespaces)
-
-    def add_enum(self, enum: Enum):
-        super().add_with_duplicate_check(enum, self.enums)
-
-    def add_class(self, cls: 'Class'):
-        super().add_with_duplicate_check(cls, self.classes)
+    def add(self, item: NamedElement):
+        if isinstance(item, type(self)):
+            super().add_with_duplicate_check(item, self.namespaces)
+        elif isinstance(item, Enum):
+            super().add_with_duplicate_check(item, self.enums)
+        elif isinstance(item, Class):
+            super().add_with_duplicate_check(item, self.classes)
 
     def get_children(self) -> list[ModelNode]:
         return self.namespaces + self.enums + self.classes

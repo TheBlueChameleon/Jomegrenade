@@ -24,12 +24,12 @@ class Enum(ModelNode):
         KEY_TYPE: None
     }
 
-    def add_enum_value(self, value: EnumValue):
-        super().add_with_duplicate_check(value, self.values)
-
-    def add_enum_value_set(self, arg: EnumValueSet):
-        for value in arg.values:
-            self.add_enum_value(value)
+    def add(self, item: NamedElement):
+        if isinstance(item, EnumValue):
+            super().add_with_duplicate_check(item, self.values)
+        elif isinstance(item, EnumValueSet):
+            for value in item.values:
+                self.add(value)
 
     def get_children(self) -> list[EnumValue]:
         return self.values

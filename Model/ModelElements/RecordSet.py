@@ -5,6 +5,8 @@ from Model.Base import DEFAULT_CONFIG_NAME, FIELD_RECORDS
 from .Record import Record
 from Model.ModelNode import ModelNode
 from .Config import Config
+from .. import NamedElement
+
 
 # ==================================================================================================================== #
 
@@ -13,8 +15,9 @@ class RecordSet(ModelNode):
     records: list[Record] = field(default_factory=lambda: [])
     config: Config = field(default_factory=lambda: Config(DEFAULT_CONFIG_NAME))
 
-    def add_record(self, record: Record):
-        super().add_with_duplicate_check(record, self.records)
+    def add(self, item: NamedElement):
+        if isinstance(item, Record):
+            super().add_with_duplicate_check(item, self.records)
 
     @classmethod
     def get_ctor_args(cls, descriptor: OrderedDict):

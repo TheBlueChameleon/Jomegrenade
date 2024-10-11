@@ -1,7 +1,8 @@
 from collections import OrderedDict
 from typing import Iterator
 
-from Model import KEY_IMPLICIT, KEY_TYPE
+from Model import KEY_IMPLICIT, KEY_TYPE, REGISTERED_TYPES, ModelNode
+
 
 # ==================================================================================================================== #
 
@@ -26,16 +27,16 @@ def split_descriptor(descriptor: str) -> OrderedDict:
     if len(singles) == 1:
         result[KEY_IMPLICIT] = singles[0]
     elif len(singles) > 1:
-        print("malformed:", descriptor)
-        print("  ", singles)
+        result[KEY_IMPLICIT] = singles
 
     # todo: warn malformed
 
     return result
 
-def get_explicit_node_type_or(od: OrderedDict, fallback: type['ModelNode']):
-    typename = od.get(KEY_TYPE, None)
+def get_explicit_node_type_or(descriptor: OrderedDict, fallback: type[ModelNode]) -> type[ModelNode] | None:
+    typename = descriptor.get(KEY_TYPE, None)
     if typename is None:
         return fallback
     else:
-        return fallback # TYPENAME_TO_TYPE.get(typename)
+        # todo: warn on malformed
+        return REGISTERED_TYPES.get(typename, fallback)
