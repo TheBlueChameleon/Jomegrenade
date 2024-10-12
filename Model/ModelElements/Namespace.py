@@ -52,13 +52,8 @@ class Namespace(ModelNode):
         for name, element_descriptor in unused.items():
             delegate_descriptor = split_descriptor(element_descriptor)
             delegate_class: ModelNode = get_explicit_node_type_or(delegate_descriptor, Namespace)
-
-            delegate_descriptor[KEY_NAME] = name
-            if KEY_TYPE in delegate_descriptor.keys():
-                target_name = delegate_descriptor.pop(KEY_TYPE)
-            else:
-                target_name = TYPENAME_NAMESPACE
-
+            
+            target_name = delegate_descriptor.get(KEY_TYPE, TYPENAME_NAMESPACE)
             target = cls.DELEGATE_RESULT_RECEIVERS.get(target_name, None)
             if target is not None:
                 instance = delegate_class.from_name_and_string(name, element_descriptor)

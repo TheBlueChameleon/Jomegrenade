@@ -1,4 +1,5 @@
 from Model.Base import *
+from Model.DescriptorHandler import split_descriptor
 from Model.ModelNode import ModelNode
 
 # ==================================================================================================================== #
@@ -27,3 +28,10 @@ class EnumValue(ModelNode):
         cls.KNOWN_KEYS[KEY_IMPLICIT] = FIELD_VALUE
         return result
 
+    @classmethod
+    def from_name_and_string(cls, name: str, descriptor: str):
+        od = split_descriptor(descriptor)
+        if name is KEY_IMPLICIT:
+            name = od.pop(KEY_IMPLICIT)
+        od[KEY_NAME] = name
+        return super().from_ordered_dict(od)

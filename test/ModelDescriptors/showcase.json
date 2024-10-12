@@ -12,8 +12,8 @@
 
     "EmptyNameSpace": {},
 
-    "NamespacedSimpleClass" : "#type=class, x=int",
-    "NamespacedSimpleEnum" : "#type=enum, x=1;y",
+    "NamespacedSimpleClass" : "#type=class; x=int",
+    "NamespacedSimpleEnum" : "#type=enum; x=1;y",
 
     "Foo": {
       "#type": "class",

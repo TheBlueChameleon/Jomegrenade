@@ -51,8 +51,8 @@ class CtorDictHandler:
     @classmethod
     def get_delegate_nodes(cls, delegate_class: type[ModelNode], descriptor: OrderedDict):
         unused = cls.get_unknown_args(descriptor)
-        impl = descriptor.get(KEY_IMPLICIT, None)
-        if impl is not None:
+        optional_implicit_key = descriptor.get(KEY_IMPLICIT, None)
+        if optional_implicit_key is not None:
             unused[KEY_IMPLICIT] = descriptor[KEY_IMPLICIT]
 
         forward_nodes = []
